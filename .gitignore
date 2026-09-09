@@ -1,0 +1,27 @@
+# Environment / secrets
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# IDE
+.vscode/
+.idea/
+
+# Large/raw dataset
+data/raw/*
+!data/raw/.gitkeep
+
+# Generated evaluation cache
+eval/results_cache.jsonl
+
+# OS
+.DS_Store
+Thumbs.db
+eval/golden_set/to_label.csv
+
+data/processed/*
+!data/processed/.gitkeep

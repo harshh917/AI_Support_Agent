@@ -1,0 +1,26 @@
+# Central knobs. Nothing brand- or model-specific should be hardcoded in src/.
+
+brand:
+  twitter_handle: "AppleSupport"   # change to target a different brand; see README
+  max_threads: 20000                # subsample cap for data/processed
+
+model:
+  classify: "gemini-3.8-flash"
+  draft: "gemini-3.8-flash"
+  judge: "gemini-3.8-flash"                
+
+retrieval:
+  top_k: 5                # how many similar resolved threads to ground drafting on
+  min_similarity: 0.35     # below this, treat as "no strong precedent" -> lean toward escalate
+
+escalation:
+  # Auto-handle only if classifier confidence AND retrieval grounding both clear these bars.
+  min_classifier_confidence: 0.75
+  min_grounding_similarity: 0.5
+  always_escalate_intents:        # filled in once intents are defined from real data
+    - "account_security"
+
+
+eval:
+  golden_set_size: 200
+  judge_temperature: 0.0
