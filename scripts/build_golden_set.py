@@ -1,20 +1,4 @@
-"""
-Sample threads for hand-labeling into the golden evaluation set.
 
-This script does NOT auto-label anything — it samples candidates and writes a CSV
-for you to label by hand (intent, correct escalate/auto decision, and a short note
-on what a good reply would ground on).
-
-Sampling strategy:
-  - Stratify by thread length so the golden set is not dominated by one type.
-  - Prefer short and long multi-turn threads because the current dataset has
-    very few/no single-turn threads.
-  - Fill any remaining slots randomly from the unsampled threads.
-  - Use a fixed seed for reproducibility.
-
-Usage:
-    python scripts/build_golden_set.py --n 200
-"""
 
 import argparse
 import json
@@ -65,7 +49,7 @@ def main():
             f"Requested {n} threads, but only {len(threads)} are available."
         )
 
-    # Create thread-length buckets.
+   
     buckets = {
         "single": [],
         "short": [],
@@ -75,11 +59,6 @@ def main():
     for thread in threads:
         buckets[bucket(thread)].append(thread)
 
-    # Target distribution:
-    # 15% single, 50% short, 35% long.
-    #
-    # The dataset currently has no/very few single-turn threads,
-    # so unavailable slots will be filled from the remaining pool.
     targets = {
         "single": int(n * 0.15),
         "short": int(n * 0.50),
@@ -88,7 +67,7 @@ def main():
 
     sampled = []
 
-    # Sample from each bucket.
+   
     for name, items in buckets.items():
         random.shuffle(items)
 
@@ -96,7 +75,7 @@ def main():
 
         sampled.extend(items[:take])
 
-    # Fill remaining slots if some bucket did not have enough examples.
+    
     remaining = n - len(sampled)
 
     if remaining > 0:
@@ -115,7 +94,7 @@ def main():
 
         sampled.extend(remaining_pool[:remaining])
 
-    # Final shuffle so the CSV is not grouped by thread length.
+   
     random.shuffle(sampled)
 
     rows = []
@@ -143,7 +122,7 @@ def main():
                 "customer_message": customer_msg,
                 "full_thread": full_thread,
 
-                # Columns to fill manually.
+              
                 "label_intent": "",
                 "label_escalate": "",
                 "label_escalate_reason": "",
@@ -167,7 +146,7 @@ def main():
         f"eval/golden_set/golden.jsonl"
     )
 
-    # Print sampling distribution for reproducibility.
+   
     print("\nSampling distribution:")
 
     distribution = pd.Series(
