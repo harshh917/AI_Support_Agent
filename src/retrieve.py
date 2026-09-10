@@ -1,12 +1,4 @@
-"""
-Retrieve similar, historically-resolved threads to ground reply drafting. Uses TF-IDF
-cosine similarity over resolved threads' customer messages — deliberately simple and
-auditable rather than an embedding black box, since "grounded in how this brand has
-historically resolved similar issues" needs to be checkable by a human reviewer.
 
-If this proves too weak in eval (see reports/report.md), swap in embeddings — the
-interface (`retrieve(query, k)`) doesn't change either way.
-"""
 from __future__ import annotations
 
 import json
