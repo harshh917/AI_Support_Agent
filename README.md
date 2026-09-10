@@ -73,7 +73,7 @@ Ambiguous messages follow a primary-symptom rule. For example, battery drain aft
 ## Repository structure
 
 ```text
-hiver-support-agent/
+AI_Support_Agent/
 ├── src/
 │   ├── classify.py
 │   ├── retrieve.py
@@ -265,6 +265,8 @@ using quadratic-weighted Cohen's kappa and mean absolute error.
 During evaluation, the Gemini free-tier daily generation quota was exhausted. Therefore, a full 200-example LLM evaluation and judge run could not be completed without additional API quota.
 
 No unsupported LLM performance number is reported.
+
+The agreement harness is implemented but could not be populated with fresh LLM-judge scores because the available Gemini free-tier quota was exhausted during evaluation.
 
 ## Golden set
 
