@@ -5,15 +5,22 @@ to `golden.jsonl` with one JSON object per line, matching this schema:
 
 ```json
 {
-  "thread_id": "123456",
-  "customer_message": "my order hasn't arrived and it's been 2 weeks",
-  "context_turns": ["...prior turns if any..."],
-  "gold_intent": "shipping_delay",
+  "thread_id": "1913634",
+  "customer_message": "@AppleSupport Finally decided to upgrade my ios yesterday to 11.0.3, and now my battery is almost dead after only 6 hours.",
+  "context_turns": [],
+  "gold_intent": "battery_power",
   "gold_escalate": false,
-  "gold_escalate_reason": "routine delay, standard resolution exists in history",
-  "gold_reply_notes": "should reference tracking check + standard refund/reship policy"
+  "gold_escalate_reason": "routine battery or charging troubleshooting",
+  "gold_reply_notes": "Ask device/iOS version and battery health; provide battery, charging, or power troubleshooting.",
+  "human_reviewed": true,
+  "review_notes": "Human review: confirmed as originally labeled."
 }
 ```
+
+`human_reviewed` / `review_notes` are set on the subset that has actually been checked
+by a person (26/200 as of the last review round — see `reports/decision_log.md` #16).
+Any example without `human_reviewed: true` is still only model-assisted and should be
+treated as provisional, not ground truth.
 
 Notes on how this set was sampled and labeled — including any deviations from the
 default script (e.g. manual oversampling of ambiguous cases) — belong in
