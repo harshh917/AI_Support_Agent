@@ -1,4 +1,4 @@
-# AppleSupport AI Support Agent
+ AI Support Agent
 
 An auditable AI customer-support agent built on the Customer Support on Twitter dataset.
 
