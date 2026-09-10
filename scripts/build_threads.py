@@ -1,20 +1,4 @@
-"""
-Reconstruct customer<->brand conversation threads from the flat, reply-chain-linked
-tweet table produced by download_data.py.
 
-The raw data links tweets via `in_response_to_tweet_id` / `response_tweet_id`, not by
-a thread/conversation id, so we walk the chain ourselves.
-
-Output: data/processed/threads.jsonl, one JSON object per thread:
-    {
-        "thread_id": str,
-        "turns": [{"author": "customer"|"brand", "text": str, "created_at": str}, ...],
-        "resolved": bool  # heuristic — see decision_log.md for definition + caveats
-    }
-
-Usage:
-    python scripts/build_threads.py
-"""
 import json
 from pathlib import Path
 
@@ -28,8 +12,6 @@ def build_threads(df: pd.DataFrame, brand: str) -> list[dict]:
     df = df.set_index("tweet_id", drop=False)
     by_id = df.to_dict(orient="index")
 
-    # A thread root is a customer tweet with no in_response_to (start of conversation)
-    # that eventually got a reply from the brand.
     threads = []
     customer_roots = df[
         (df["inbound"] == "True") & (df["in_response_to_tweet_id"].isna())
@@ -41,7 +23,7 @@ def build_threads(df: pd.DataFrame, brand: str) -> list[dict]:
             "text": root["text"],
             "created_at": root["created_at"],
         }]
-        # Walk forward via response_tweet_id (comma-separated list of next tweet ids)
+   
         current = root
         seen = {root["tweet_id"]}
         while pd.notna(current.get("response_tweet_id")):
@@ -63,9 +45,7 @@ def build_threads(df: pd.DataFrame, brand: str) -> list[dict]:
             threads.append({
                 "thread_id": root["tweet_id"],
                 "turns": turns,
-                # Heuristic: thread is "resolved" if it ends on a brand turn (customer
-                # didn't reply again) AND has >= 2 turns. This is crude — see
-                # reports/decision_log.md for why and what it misses.
+                
                 "resolved": turns[-1]["author"] == "brand" and len(turns) >= 2,
             })
 
