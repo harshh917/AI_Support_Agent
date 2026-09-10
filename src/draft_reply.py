@@ -1,4 +1,4 @@
-"""Draft a reply grounded in retrieved, historically-resolved threads."""
+
 from .llm_client import complete
 from .retrieve import retrieve
 
