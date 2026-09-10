@@ -1,10 +1,4 @@
-"""Decide auto-handle vs escalate-to-human, with a stated reason.
 
-Deliberately rule-based (not another LLM call) on top of signals the earlier stages
-already produced — classifier confidence and retrieval grounding strength — so the
-decision is auditable and cheap. See reports/decision_log.md for why this wasn't
-made an LLM judgment call too.
-"""
 import yaml
 
 _cfg = yaml.safe_load(open("config.yaml"))
