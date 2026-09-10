@@ -1,12 +1,4 @@
-"""
-Intent classification: the LLM-based classifier used in the pipeline, plus two
-baselines the report compares against (required deliverable: "results vs at least
-two baselines, a trivial one and a simple one").
 
-INTENTS is intentionally left as a placeholder here — it must be filled in from
-actually reading ~200-300 threads for the chosen brand, not guessed upfront.
-See reports/decision_log.md for how the final list was derived.
-"""
 from __future__ import annotations
 
 import pickle
@@ -16,8 +8,6 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.linear_model import LogisticRegression
 
 from .llm_client import complete_json
-
-# TODO: replace with intents derived from your data exploration (target: 6-10).
 INTENTS = [
     "keyboard_input",
     "battery_power",
@@ -34,13 +24,8 @@ INTENTS = [
 BASELINE_MODEL_PATH = Path("data/processed/baseline_clf.pkl")
 
 
-# --- Trivial baseline: majority class ------------------------------------------------
-
 def trivial_baseline_predict(_text: str, majority_class: str = "app_media_issue") -> str:
     return majority_class
-
-
-# --- Simple baseline: TF-IDF + logistic regression ------------------------------------
 
 def train_simple_baseline(texts: list[str], labels: list[str]) -> None:
     vec = TfidfVectorizer(max_features=5000, ngram_range=(1, 2))
@@ -57,8 +42,6 @@ def simple_baseline_predict(text: str) -> str:
         vec, clf = pickle.load(f)
     return clf.predict(vec.transform([text]))[0]
 
-
-# --- Actual classifier: LLM, few-shot from labeled examples --------------------------
 
 CLASSIFY_PROMPT = """You are classifying a customer support message into exactly one intent.
 
